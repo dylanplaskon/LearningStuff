@@ -1,0 +1,3 @@
+#gametest
+
+print('test success')
