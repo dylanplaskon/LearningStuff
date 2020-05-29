@@ -1,0 +1,33 @@
+Thoughts and To Do
+
+-Have inventory be solely weight based?
+-Change textures to octothorpes and grey, closer to original angband
+-WASD movement, with mouse aiming and qezc diagonals?
+-recolor item pickup
+-change previous game state to default game state?
+-prompt for exiting game
+-save game
+-if move to WASD controls, change drop inventory key
+-mouse targeting and no-mouse controls
+-decide how to handle resistances
+-decide dndstyle vs poestyle attributes
+-comment code
+-implement angband style speed system by adjusting turn handling (player energy counter)
+-Change stair key
+-shields giv CWDT effect
+-item stacking in inventory
+-monsters give xp based on their level and player's
+-move level up constants to constants dictionary
+-move item and monster chances to different file, to make more modular
+-monster has intrinsic item rarity from general drop table.
+-implement monster drops
+-for dropping loot -> roll type then rarity
+-loot stacks on floor
+-item rarity/quantity mods?
+-decouple inventory and wielded
+-add stats ui to main game screen
+-craftable items
+-town or hideout
+-improve stat system
+-make testing realm
+-figure out how to package into exe for others to play without python install
