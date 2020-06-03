@@ -46,22 +46,24 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
 				
 				if visible:
 					if wall:
-						libtcod.console_set_char_background(con, x, y, colors.get('light_wall'), libtcod.BKGND_SET)
+						libtcod.console_put_char_ex(con, x, y, '#', libtcod.white, libtcod.black)
 					else:
-						libtcod.console_set_char_background(con, x, y, colors.get('light_ground'), libtcod.BKGND_SET)
-					
+						libtcod.console_put_char_ex(con, x, y, '.', libtcod.white, libtcod.black)
+			
 					game_map.tiles[x][y].explored = True
 				elif game_map.tiles[x][y].explored:
 					if wall:
-						libtcod.console_set_char_background(con, x, y, colors.get('dark_wall'), libtcod.BKGND_SET)
+						libtcod.console_put_char_ex(con, x, y, '#', libtcod.dark_grey, libtcod.black)
 					else:
-						libtcod.console_set_char_background(con, x, y, colors.get('dark_ground'), libtcod.BKGND_SET)
-						
+						libtcod.console_put_char_ex(con, x, y, '.', libtcod.dark_grey, libtcod.black)
+					
 	#draw all entities
 	
 	entities_in_render_order = sorted(entities, key=lambda x: x.render_order.value) 
+	
 	for entity in entities_in_render_order:
 		draw_entity(con, entity, fov_map, game_map)
+	
 	
 	libtcod.console_blit(con, 0, 0, screen_width, screen_height, 0, 0, 0)
 	
@@ -94,21 +96,28 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
 		inventory_menu(con, inventory_title, player, 50, screen_width, screen_height)
 	
 	elif game_state == GameStates.LEVEL_UP:
-		level_up_menu(con, 'Level up! Choose a state to raise:', player, 40, screen_width, screen_height)
+		level_up_menu(con, 'Level up! Choose a stat to raise:', player, 40, screen_width, screen_height)
 	
 	elif game_state == GameStates.CHARACTER_SCREEN:
 		character_screen(player, 30, 10, screen_width, screen_height)
 	
-def clear_all(con, entities):
+def clear_all(con, entities, fov_map, game_map):
 	for entity in entities:
-		clear_entity(con, entity)
+		clear_entity(con, entity, fov_map, game_map)
 		
 def draw_entity(con, entity, fov_map, game_map):
 	
 	if libtcod.map_is_in_fov(fov_map, entity.x, entity.y) or (entity.stairs and game_map.tiles[entity.x][entity.y].explored):
-		libtcod.console_set_default_foreground(con, entity.color)
-		libtcod.console_put_char(con, entity.x, entity.y, entity.char, libtcod.BKGND_NONE)
+		libtcod.console_put_char_ex(con, entity.x, entity.y, entity.char, entity.color, libtcod.black)
 	
-def clear_entity(con, entity):
-	libtcod.console_put_char(con, entity.x, entity.y, ' ', libtcod.BKGND_NONE)
+def clear_entity(con, entity, fov_map, game_map):
+	visible = libtcod.map_is_in_fov(fov_map, entity.x, entity.y)
+	if visible:
+		libtcod.console_put_char_ex(con, entity.x, entity.y, '.', libtcod.white, libtcod.black)
 	
+	if not visible and game_map.tiles[entity.x][entity.y].explored:
+		libtcod.console_put_char_ex(con, entity.x, entity.y, '.', libtcod.dark_grey, libtcod.black)
+	
+	else:
+		libtcod.console_put_char(con, entity.x, entity.y, ' ', libtcod.BKGND_NONE)
+		

@@ -31,3 +31,5 @@ Thoughts and To Do
 -improve stat system
 -make testing realm
 -figure out how to package into exe for others to play without python install
+-Make Final Boss
+-change moster-player detection
